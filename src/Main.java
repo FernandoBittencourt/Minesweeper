@@ -5,9 +5,8 @@ public class Main {
         System.out.println(m);
         System.out.println(m.draw());
 
-        System.out.println(m.reveal(1,1));
-        System.out.println(m.hasWon());
-        //System.out.println(m.reveal(0,3));
+        m.reveal(1,1);
+        System.out.println(m.getState());
         System.out.println(m.draw());
     }
 }

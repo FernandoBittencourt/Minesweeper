@@ -3,13 +3,14 @@ import java.util.Random;
 import java.util.Set;
 
 class Minesweeper {
+
     private final int[][] fields;
     private final boolean[][] revealed;
     private int revealedCount;
     private final int rows;
     private final int columns;
     private final int bombs;
-
+    private GameState state;
 
     public Minesweeper(int rows, int columns, int bombs){
         if (bombs > rows * columns) {
@@ -18,6 +19,7 @@ class Minesweeper {
         this.rows=rows;
         this.columns=columns;
         this.bombs=bombs;
+        state = GameState.RUNNING;
         this.fields=new int[rows][columns];
         this.revealed=new boolean[rows][columns];
         this.revealedCount=0;
@@ -54,26 +56,32 @@ class Minesweeper {
         }
     }
 
-    public boolean reveal(int row, int column){
+    public void reveal(int row, int column){
+        if(!GameState.RUNNING.equals(state)){
+            throw new IllegalArgumentException("The game is finished.");
+        }
         if(!isInsideBoard(row, column)) {
             throw new IllegalArgumentException("Out of the board.");
         }
         if (revealed[row][column]) {
-            return true;
+            throw new IllegalArgumentException("Cell already revealed.");
         }
         revealed[row][column]=true;
         revealedCount++;
 
         if(fields[row][column]==-1){
-            return false;
+            state = GameState.LOST;
+            return;
+        } else if(fields[row][column]==0) {
+            revealAdj(row, column);
         }
-        
-        revealAdj(row, column);
-        return true;
+        if(hasWon()){
+            state = GameState.WON;
+        }
     }
 
     private void revealAdj(int row, int column) {
-        //TODO: Use BFS.
+        // TODO: Replace DFS with BFS to avoid deep recursion (stack overflow).
         for(int i=row-1; i<=row+1; i++){
             for(int j=column-1; j<=column+1; j++){
                 if(!isInsideBoard(i,j) || revealed[i][j] || fields[i][j]==-1) {
@@ -87,7 +95,7 @@ class Minesweeper {
             }
         }
     }
-    public boolean hasWon(){
+    private boolean hasWon(){
         return revealedCount==(rows*columns)-bombs;
     }
     private boolean isInsideBoard(int row, int column){
@@ -119,7 +127,9 @@ class Minesweeper {
         return result.toString();
     }
 
-
+    public GameState getState(){
+        return state;
+    }
     @Override
     public String toString(){
         StringBuilder result = new StringBuilder();
