@@ -4,6 +4,7 @@ import java.util.Set;
 
 class Minesweeper {
     private final int[][] fields;
+    private final boolean[][] revealed;
     private final int rows;
     private final int columns;
     private final int bombs;
@@ -17,6 +18,7 @@ class Minesweeper {
         this.columns=columns;
         this.bombs=bombs;
         this.fields=new int[rows][columns];
+        this.revealed=new boolean[rows][columns];
         Set<Cell> setOfBombs = generateBombs();
         addNumberAdj(setOfBombs);
     }
@@ -48,6 +50,53 @@ class Minesweeper {
                 }
             }
         }
+    }
+
+    public boolean reveal(int row, int column){
+        if(!isInsideBoard(row, column)) {
+            throw new IllegalArgumentException("Out of the board.");
+        }
+        revealed[row][column]=true;
+
+        if(fields[row][column]==-1){
+            return false;
+        }
+        
+        revealAdj(row, column);
+        return true;
+    }
+
+    private void revealAdj(int row, int column) {
+        //TODO: Implement Flood fill
+    }
+
+    private boolean isInsideBoard(int row, int column){
+        return row >= 0 && row < rows && column >= 0 && column<columns;
+    }
+
+    public String draw(){
+        StringBuilder result = new StringBuilder();
+        for(int i=0;i<rows;i++){
+            result.append("[");
+            for(int j=0; j<columns; j++){
+                if(revealed[i][j]) {
+                    if (fields[i][j] == -1) {
+                        result.append("*");
+                    } else {
+                        result.append(fields[i][j]);
+                    }
+                } else {
+                    result.append("-");
+                }
+
+                if (j < columns - 1) {
+                    result.append(",");
+                }
+            }
+
+            result.append("]\n");
+        }
+        return result.toString();
     }
 
 
