@@ -6,7 +6,7 @@ public class Main {
         System.out.println(m.draw());
 
         System.out.println(m.reveal(1,1));
-        //System.out.println(m.reveal(2,3));
+        System.out.println(m.hasWon());
         //System.out.println(m.reveal(0,3));
         System.out.println(m.draw());
     }

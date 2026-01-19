@@ -5,6 +5,7 @@ import java.util.Set;
 class Minesweeper {
     private final int[][] fields;
     private final boolean[][] revealed;
+    private int revealedCount;
     private final int rows;
     private final int columns;
     private final int bombs;
@@ -19,6 +20,7 @@ class Minesweeper {
         this.bombs=bombs;
         this.fields=new int[rows][columns];
         this.revealed=new boolean[rows][columns];
+        this.revealedCount=0;
         Set<Cell> setOfBombs = generateBombs();
         addNumberAdj(setOfBombs);
     }
@@ -60,6 +62,7 @@ class Minesweeper {
             return true;
         }
         revealed[row][column]=true;
+        revealedCount++;
 
         if(fields[row][column]==-1){
             return false;
@@ -77,14 +80,16 @@ class Minesweeper {
                     continue;
                 }
                 revealed[i][j]=true;
-
+                revealedCount++;
                 if(fields[i][j]==0) {
                     revealAdj(i, j);
                 }
             }
         }
     }
-
+    public boolean hasWon(){
+        return revealedCount==(rows*columns)-bombs;
+    }
     private boolean isInsideBoard(int row, int column){
         return row >= 0 && row < rows && column >= 0 && column<columns;
     }
