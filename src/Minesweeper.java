@@ -68,6 +68,18 @@ class Minesweeper {
 
     private void revealAdj(int row, int column) {
         //TODO: Implement Flood fill
+        for(int i=row-1; i<=row+1; i++){
+            for(int j=column-1; j<=column+1; j++){
+                if(isInsideBoard(i,j) && !revealed[i][j]){
+                    if(fields[i][j]!=-1){
+                        revealed[i][j]=true;
+                    }
+                    if(fields[i][j]==0) {
+                        revealAdj(i, j);
+                    }
+                }
+            }
+        }
     }
 
     private boolean isInsideBoard(int row, int column){
