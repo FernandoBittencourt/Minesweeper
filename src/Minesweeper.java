@@ -11,7 +11,7 @@ class Minesweeper {
 
     public Minesweeper(int rows, int columns, int bombs){
         if (bombs > rows * columns) {
-            throw new IllegalArgumentException("Bombas demais para o tabuleiro");
+            throw new IllegalArgumentException("Too many bombs for the board.");
         }
         this.rows=rows;
         this.columns=columns;
@@ -22,7 +22,7 @@ class Minesweeper {
     }
 
     private Set<Cell> generateBombs(){
-        Set<Cell> setOfBombs = new HashSet<Cell>();
+        Set<Cell> setOfBombs = new HashSet<>();
         Random rand = new Random();
         int placed=0;
 
