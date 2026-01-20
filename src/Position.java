@@ -1,10 +1,10 @@
 import java.util.Objects;
 
-public class Cell  {
+public class Position {
     private final int row;
     private final int column;
 
-    public Cell (int row, int column){
+    public Position(int row, int column){
         this.row=row;
         this.column=column;
     }
@@ -25,7 +25,7 @@ public class Cell  {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Cell c = (Cell) o;
+        Position c = (Position) o;
         return this.getRow()==c.getRow() && this.getColumn()==c.getColumn();
     }
 

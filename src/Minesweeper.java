@@ -23,17 +23,17 @@ class Minesweeper {
         this.fields=new int[rows][columns];
         this.revealed=new boolean[rows][columns];
         this.revealedCount=0;
-        Set<Cell> setOfBombs = generateBombs();
+        Set<Position> setOfBombs = generateBombs();
         addNumberAdj(setOfBombs);
     }
 
-    private Set<Cell> generateBombs(){
-        Set<Cell> setOfBombs = new HashSet<>();
+    private Set<Position> generateBombs(){
+        Set<Position> setOfBombs = new HashSet<>();
         Random rand = new Random();
         int placed=0;
 
         while(placed<bombs){
-            Cell p = new Cell(rand.nextInt(rows), rand.nextInt(columns));
+            Position p = new Position(rand.nextInt(rows), rand.nextInt(columns));
             if(setOfBombs.add(p)){
                 placed++;
             }
@@ -41,8 +41,8 @@ class Minesweeper {
         return setOfBombs;
     }
 
-    private void addNumberAdj(Set<Cell> setOfBombs){
-        for(Cell p: setOfBombs){
+    private void addNumberAdj(Set<Position> setOfBombs){
+        for(Position p: setOfBombs){
             fields[p.getRow()][p.getColumn()]=-1;
             for(int row=p.getRow()-1; row<=p.getRow()+1; row++){
                 for(int column=p.getColumn()-1; column<=p.getColumn()+1; column++){
