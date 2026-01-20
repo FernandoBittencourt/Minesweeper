@@ -111,12 +111,12 @@ class Minesweeper {
         return row >= 0 && row < rows && column >= 0 && column<columns;
     }
 
-    public String draw(){
+    public String buildBoardString(boolean showOnlyRevealed) {
         StringBuilder result = new StringBuilder();
         for(int i=0;i<rows;i++){
             result.append("[");
             for(int j=0; j<columns; j++){
-                if(revealed[i][j]) {
+                if(!showOnlyRevealed || revealed[i][j]) {
                     if (fields[i][j] == -1) {
                         result.append("*");
                     } else {
@@ -130,7 +130,6 @@ class Minesweeper {
                     result.append(",");
                 }
             }
-
             result.append("]\n");
         }
         return result.toString();
@@ -139,25 +138,15 @@ class Minesweeper {
     public GameState getState(){
         return state;
     }
+
+    public String draw(){
+        return buildBoardString(true);
+    }
+
     @Override
     public String toString(){
-        StringBuilder result = new StringBuilder();
-        for(int i=0;i<rows;i++){
-            result.append("[");
-            for(int j=0; j<columns; j++){
-                if(fields[i][j]==-1){
-                    result.append("*");
-                } else {
-                    result.append(fields[i][j]);
-                }
-                if(j<columns-1){
-                    result.append(",");
-                }
-            }
+        return buildBoardString(false);
 
-            result.append("]\n");
-        }
-        return result.toString();
     }
 
 }
