@@ -1,6 +1,4 @@
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 class Minesweeper {
 
@@ -66,11 +64,10 @@ class Minesweeper {
         if (revealed[row][column]) {
             throw new IllegalArgumentException("Cell already revealed.");
         }
-        revealed[row][column]=true;
-        revealedCount++;
 
         if(fields[row][column]==-1){
             state = GameState.LOST;
+            revealed[row][column]=true;
             return;
         } else if(fields[row][column]==0) {
             revealAdj(row, column);
@@ -80,21 +77,33 @@ class Minesweeper {
         }
     }
 
-    private void revealAdj(int row, int column) {
-        // TODO: Replace DFS with BFS to avoid deep recursion (stack overflow).
-        for(int i=row-1; i<=row+1; i++){
-            for(int j=column-1; j<=column+1; j++){
-                if(!isInsideBoard(i,j) || revealed[i][j] || fields[i][j]==-1) {
-                    continue;
-                }
-                revealed[i][j]=true;
-                revealedCount++;
-                if(fields[i][j]==0) {
-                    revealAdj(i, j);
+    private void revealAdj(int startRow, int startCol) {
+        Queue<Position> queue = new ArrayDeque<>();
+        queue.add(new Position(startRow, startCol));
+
+        while (!queue.isEmpty()) {
+            Position pos = queue.poll();
+            int r = pos.getRow();
+            int c = pos.getColumn();
+
+            if (!isInsideBoard(r, c) || revealed[r][c] || fields[r][c] == -1) {
+                continue;
+            }
+            revealed[r][c] = true;
+            revealedCount++;
+
+            if (fields[r][c] == 0) {
+                for (int i = r - 1; i <= r + 1; i++) {
+                    for (int j = c - 1; j <= c + 1; j++) {
+                        if (isInsideBoard(i, j) && !revealed[i][j] && fields[i][j] != -1) {
+                            queue.add(new Position(i, j));
+                        }
+                    }
                 }
             }
         }
     }
+
     private boolean hasWon(){
         return revealedCount==(rows*columns)-bombs;
     }
