@@ -71,7 +71,11 @@ class Minesweeper {
             return;
         } else if(fields[row][column]==0) {
             revealAdj(row, column);
+        } else {
+            revealed[row][column] = true;
+            revealedCount++;
         }
+
         if(hasWon()){
             state = GameState.WON;
         }
