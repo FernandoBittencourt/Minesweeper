@@ -3,8 +3,15 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Minesweeper minesweeper = new Minesweeper(10, 10, 5);
-        System.out.println(minesweeper.draw());
+        System.out.print("Enter number of rows: ");
+        int rows = sc.nextInt();
+        System.out.print("Enter number of columns: ");
+        int cols = sc.nextInt();
+        System.out.print("Enter number of bombs: ");
+        int bombs = sc.nextInt();
+
+        Minesweeper minesweeper = new Minesweeper(rows, cols, bombs);
+
         while(GameState.RUNNING.equals(minesweeper.getState())) {
             System.out.print("Enter row and column (e.g., 0 1): ");
             int row = sc.nextInt();
